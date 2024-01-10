@@ -101,42 +101,41 @@ def createRooms():
     global currentRoom
 
     #make 4 rooms
-    r1 = Room("White Room", "An empty room that has a mat at the door.")
-    r2 = Room("Blue Room")
-    r3 = Room("Red Room")
-    r4 = Room("Room 4")
+    whiteR = Room("White Room", "An empty room that has a mat at the door.")
+    blueR = Room("Blue Room", "A room painted a shade of blue with picture of the same man hanging all over.")
+    redR = Room("Red Room", "A crimson stained room with a bucket in the corner.")
+    greenR = Room("Green Room", "The room has green wall paper and there is a locked closet door.")
+    yellowR = Room("Yellow Room", "The walls are a sickening yellow and there is a shelf with lots of junk on it.")
+    closet = Room("Closet", "Through the darkness there is a statue of man name Ankunda Kiremire")
 
-    ##add exits to r1
-    r1.addExit("east", r2)
-    r1.addExit("south", r3)
+    ##add exits to rooms
+    whiteR.addExit("east", blueR)
+
+    blueR.addExit("east", redR)
+    blueR.addExit("west", whiteR)
+
+    redR.addExit("west", blueR)
+    redR.addExit("south", greenR)
+
+    greenR.addExit("north", redR)
+    greenR.addExit("west", closet)
+    greenR.addExit("north", yellowR)
+
+    yellowR.addExit("north", greenR)
+
+    closet.addExit("east", greenR)
 
     #add grabbables and items to r1
-    r1.addGrabbable("key")
-    r1.addItem("desk", "it is wooden")
-    r1.addItem("chair", "made of steel")
+    whiteR.addItem("Rug", "It says \"GOODBYE\" insead of welcome and there is a slight bulge under it resembling a key")
+    whiteR.addGrabbable("key")
 
-    r2.addExit("west", r1)
-    r2.addExit("south", r4)
-    r2.addItem("bed", "it is twin sized with some hair sitting on it")
-    r2.addGrabbable("wig")
-    r2.addItem("computer", "it has fortnite open")
-    r2.addGrabbable("vbucks")
+    blueR.addGrabbable("Fake_Key", "It is a strange looking key that doesnt seem like it will ever fit in a lock")
 
+    redR.addItem("Blood_Bucket", "It has murky red liquid inside and a faint shimmer of gold a the bottom")
 
-    r3.addExit("north", r1)
-    r3.addExit("east", r4)
-    r3.addItem("stove", "there are some pancakes on it")
-    r3.addGrabbable("pancake")
-    r3.addItem("pantry", "there is bologna in it")
-    r3.addGrabbable("bologna")
-
-    r4.addExit("west", r3)
-    r4.addExit("north", r2)
-    r4.addExit("south", None)
-    r4.addItem("bath", "it is full of milk")
-    r4.addGrabbable("milk")
-
-    currentRoom = r1
+    greenR.addItem("Closet_Door", "It has three normal looking locks on it requiring 3 seperate keys")
+    
+    currentRoom = whiteR
     
 def death():
     print("You are dead")
