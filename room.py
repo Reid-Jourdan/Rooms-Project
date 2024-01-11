@@ -74,6 +74,11 @@ class Room:
     def addItem(self, item, desciption):
         self.items.append(item)
         self.itemDescriptions.append(desciption)
+    
+    def delItem(self, item):
+        index = self.items.index(item)
+        self.items.pop(index)
+        self.itemDescriptions.pop(index)
 
     def addGrabbable(self, item):
         self.grabbables.append(item)
@@ -125,13 +130,16 @@ closet.addExit("east", greenR)
 
 #add grabbables and items to r1
 whiteR.addItem("Rug", "It says \"GOODBYE\" insead of welcome and there is a slight bulge under it resembling a key")
-whiteR.addGrabbable("key")
-blueR.addGrabbable("Fake_Key")
+
+blueR.addItem("Painting", "It looks someeastthing like https://ars.els-cdn.com/content/image/1-s2.0-S138912861400259X-fx1.jpg")
+
 redR.addItem("Blood_Bucket", "It has murky red liquid inside and a faint shimmer of gold a the bottom")
-redR.addGrabbable("key")
+redR.addGrabbable("blood")
+
 greenR.addItem("Closet_Door", "It has three normal looking locks on it requiring 3 seperate keys")
 
-yellowR.addGrabbable("key")
+yellowR.addItem("Large_Babushka", "You found a smaller one inside")
+
 currentRoom = whiteR
     
 def death():
@@ -188,16 +196,25 @@ while(True):
             #check items
             for i in range(len(currentRoom.items)):
                 if noun.lower() == currentRoom.items[i].lower():
-                    print("!!!!!!!!4")
                     #give the correct response(desciption)
                     response = currentRoom.itemDescriptions[i]
-                    if(noun == "Closet_Door".lower()):
-                        print("!!!!!!!!1")
+                    if(noun == "closet_door"):
                         if(inventory.count("key") >= 3):
-                            print("!!!!!!!!2")
                             greenR.addExit("west", closet)
                             response = ("The door is now unlocked!")
-                            print("!!!!!!!!3")
+                    if(noun == "large_babushka"):
+                        yellowR.addItem("medium_babushka", "there is a smaller one inside")
+                        yellowR.delItem("Large_Babushka")
+                    if(noun == "medium_babushka"):
+                        yellowR.addItem("small_babushka", "there was a key inside!")
+                        yellowR.delItem("medium_babushka")
+                    if(noun == "small_babushka"):
+                        yellowR.addGrabbable("key")
+                        yellowR.delItem("small_babushka")
+                    if(noun == "rug"):
+                        whiteR.addGrabbable("key")
+                    if(noun == "blood_bucket"):
+                        redR.addGrabbable("key")
                     break
         
         #if verb is take
@@ -219,9 +236,3 @@ while(True):
         currentRoom = None
     print(f"\n{response}")
 
-
-"""
-add currency(vbucks)
-more rooms
-
-"""
