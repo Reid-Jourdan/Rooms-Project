@@ -212,3 +212,4 @@ add currency(vbucks)
 more rooms
 
 """
+#hello
