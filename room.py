@@ -97,56 +97,58 @@ class Room:
     
 ##################################################
 #HELPER FUNCTIONS
-def createRooms():
-    global currentRoom
 
-    #make 4 rooms
-    whiteR = Room("White Room", "An empty room that has a mat at the door.")
-    blueR = Room("Blue Room", "A room painted a shade of blue with picture of the same man hanging all over.")
-    redR = Room("Red Room", "A crimson stained room with a bucket in the corner.")
-    greenR = Room("Green Room", "The room has green wall paper and there is a locked closet door.")
-    yellowR = Room("Yellow Room", "The walls are a sickening yellow and there is a shelf with lots of junk on it.")
-    closet = Room("Closet", "Through the darkness there is a statue of man name Ankunda Kiremire")
 
-    ##add exits to rooms
-    whiteR.addExit("east", blueR)
+#make 4 rooms
+whiteR = Room("White Room", "An empty room that has a rug at the door.")
+blueR = Room("Blue Room", "A room painted a shade of blue with picture of the same man hanging all over.")
+redR = Room("Red Room", "A crimson stained room with a bucket in the corner.")
+greenR = Room("Green Room", "The room has green wall paper and there is a locked closet door.")
+yellowR = Room("Yellow Room", "The walls are a sickening yellow and there is a shelf with lots of junk on it.")
+closet = Room("Closet", "Through the darkness there is a statue of man name Ankunda Kiremire")
 
-    blueR.addExit("east", redR)
-    blueR.addExit("west", whiteR)
+##add exits to rooms
+whiteR.addExit("east", blueR)
 
-    redR.addExit("west", blueR)
-    redR.addExit("south", greenR)
+blueR.addExit("east", redR)
+blueR.addExit("west", whiteR)
 
-    greenR.addExit("north", redR)
-    greenR.addExit("west", closet)
-    greenR.addExit("north", yellowR)
+redR.addExit("west", blueR)
+redR.addExit("south", greenR)
 
-    yellowR.addExit("north", greenR)
+greenR.addExit("north", redR)
+greenR.addExit("south", yellowR)
 
-    closet.addExit("east", greenR)
+yellowR.addExit("north", greenR)
 
-    #add grabbables and items to r1
-    whiteR.addItem("Rug", "It says \"GOODBYE\" insead of welcome and there is a slight bulge under it resembling a key")
-    whiteR.addGrabbable("key")
+closet.addExit("east", greenR)
 
-    blueR.addGrabbable("Fake_Key", "It is a strange looking key that doesnt seem like it will ever fit in a lock")
+#add grabbables and items to r1
+whiteR.addItem("Rug", "It says \"GOODBYE\" insead of welcome and there is a slight bulge under it resembling a key")
+whiteR.addGrabbable("key")
+blueR.addGrabbable("Fake_Key")
+redR.addItem("Blood_Bucket", "It has murky red liquid inside and a faint shimmer of gold a the bottom")
+redR.addGrabbable("key")
+greenR.addItem("Closet_Door", "It has three normal looking locks on it requiring 3 seperate keys")
 
-    redR.addItem("Blood_Bucket", "It has murky red liquid inside and a faint shimmer of gold a the bottom")
-
-    greenR.addItem("Closet_Door", "It has three normal looking locks on it requiring 3 seperate keys")
-    
-    currentRoom = whiteR
+yellowR.addGrabbable("key")
+currentRoom = whiteR
     
 def death():
     print("You are dead")
 
+# def printRules():
+    
+
 
 ######################### MAIN #########################
 inventory = []
-createRooms()
+doorUnlocked = False
+hp = 3
+
 
 while(True):
-    status = f"{currentRoom}\nYou are carrying: {inventory}"
+    status = f"{currentRoom}\nYou are carrying: {inventory}\nYour current hp is: {hp}"
 
     if(currentRoom == None):
         death()
@@ -185,9 +187,17 @@ while(True):
 
             #check items
             for i in range(len(currentRoom.items)):
-                if noun == currentRoom.items[i]:
+                if noun.lower() == currentRoom.items[i].lower():
+                    print("!!!!!!!!4")
                     #give the correct response(desciption)
                     response = currentRoom.itemDescriptions[i]
+                    if(noun == "Closet_Door".lower()):
+                        print("!!!!!!!!1")
+                        if(inventory.count("key") >= 3):
+                            print("!!!!!!!!2")
+                            greenR.addExit("west", closet)
+                            response = ("The door is now unlocked!")
+                            print("!!!!!!!!3")
                     break
         
         #if verb is take
@@ -203,7 +213,10 @@ while(True):
                     currentRoom.delGrabbable(grabbable)
                     response = "Item grabbed"
                     break
-    
+    if(response == "I don't see that item"):
+        hp -= 1
+    if(hp <= 0):
+        currentRoom = None
     print(f"\n{response}")
 
 
