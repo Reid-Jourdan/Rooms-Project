@@ -131,9 +131,10 @@ closet.addExit("east", greenR)
 #add grabbables and items to r1
 whiteR.addItem("Rug", "It says \"GOODBYE\" insead of welcome and there is a slight bulge under it resembling a key")
 
-blueR.addItem("Painting", "It looks someeastthing like https://ars.els-cdn.com/content/image/1-s2.0-S138912861400259X-fx1.jpg")
+blueR.addItem("Painting", "It looks something like https://ars.els-cdn.com/content/image/1-s2.0-S138912861400259X-fx1.jpg")
+blueR.addItem("Trapdoor", "You slipped and fell into the void")
 
-redR.addItem("Blood_Bucket", "It has murky red liquid inside and a faint shimmer of gold a the bottom")
+redR.addItem("Blood_Bucket", "It has murky red liquid inside and a faint shimmer of gold at the bottom")
 redR.addGrabbable("blood")
 
 greenR.addItem("Closet_Door", "It has three normal looking locks on it requiring 3 seperate keys")
@@ -143,9 +144,44 @@ yellowR.addItem("Large_Babushka", "You found a smaller one inside")
 currentRoom = whiteR
     
 def death():
-    print("You are dead")
+    print(" " * 17 + "u" * 7)
+    print(" " * 13 + "u" * 2 + "$" * 11 + "u" * 2)
+    print(" " * 10 + "u" * 2 + "$" * 17 + "u" * 2)
+    print(" " * 9 + "u" + "$" * 21 + "u")
+    print(" " * 8 + "u" + "$" * 23 + "u")
+    print(" " * 7 + "u" + "$" * 25 + "u")
+    print(" " * 7 + "u" + "$" * 25 + "u")
+    print(" " * 7 + "u" + "$" * 6 + "\"" + " " * 3 + "\"" + "$" * 3 + "\"" + " " * 3 + "\"" + "$" * 6 + "u")
+    print(" " * 7 + "\"" + "$" * 4 + "\"" + " " * 6 + "u$u" + " " * 7 + "$" * 4 + "\"")
+    print(" " * 8 + "$" * 3 + "u" + " " * 7 + "u$u" + " " * 7 + "u" + "$" * 3)
+    print(" " * 8 + "$" * 3 + "u" + " " * 6 + "u" + "$" * 3 + "u" + " " * 6 + "u" + "$" * 3)
+    print(" " * 9 + "\"" + "$" * 4 + "u" * 2 + "$" * 3 + " " * 3 + "$" * 3 + "u" * 2 + "$" * 4 + "\"")
+    print(" " * 10 + "\"" + "$" * 7 + "\"" + " " * 3 + "\"" + "$" * 7 + "\"")
+    print(" " * 12 + "u" + "$" * 7 + "u" + "$" * 7 + "u")
+    print(" " * 13 + "u$\"$\"$\"$\"$\"$\"$u")
+    print(" " * 2 + "u" * 3 + " " * 8 + "$" * 2 + "u$ $ $ $ $u" + "$" * 2 + " " * 7 + "u" * 3)
+    print(" u" + "$" * 4 + " " * 8 + "$" * 5 + "u$u$u" + "$" * 3 + " " * 7 + "u" + "$" * 4)
+    print(" " * 2 + "$" * 5 + "u" * 2 + " " * 6 + "\"" + "$" * 9 + "\"" + " " * 5 + "u" * 2 + "$" * 6)
+    print("u" + "$" * 11 + "u" * 2 + " " * 4 + "\"" * 5 + " " * 4 + "u" * 4 + "$" * 10)
+    print("$" * 4 + "\"" * 3 + "$" * 10 + "u" * 3 + " " * 3 + "u" * 2 + "$" * 9 + "\"" * 3 + "$" * 3 + "\"")
+    print(" " + "\"" * 3 + " " * 6 + "\"" * 2 + "$" * 11 + "u" * 2 + " " + "\"" * 2 + "$" + "\"" * 3)
+    print(" " * 11 + "u" * 4 + " \"\"" + "$" * 10 + "u" * 3)
+    print(" " * 2 + "u" + "$" * 3 + "u" * 3 + "$" * 9 + "u" * 2 + " \"\"" + "$" * 11 + "u" * 3 + "$" * 3)
+    print(" " * 2 + "$" * 10 + "\"" * 4 + " " * 11 + "\"\"" + "$" * 11 + "\"")
+    print(" " * 3 + "\"" + "$" * 5 + "\"" + " " * 22 + "\"\"" + "$" * 4 + "\"\"")
+    print(" " * 5 + "$" * 3 + "\"" + " " * 25 + "$" * 4 + "\"")
+    print(" " * 14 + "You are dead")
 
-# def printRules():
+def victory():
+    print("You have won the game!")
+    print("Click here to claim your reward: https://rb.gy/6hesmx")
+
+def printRules():
+    print("Welcome to the escape house! Thanks for playing.")
+    print("Rules:\n\tYou have 3 lives")
+    print("\tActions are \'go\', \'look\', and \'take\', use these to move around and interact with anything you see or maybe find...")
+    print("\tIf you misspell a word, you lose a life.")
+    print("\tFYI... beware of the basement.")
     
 
 
@@ -154,6 +190,7 @@ inventory = []
 doorUnlocked = False
 hp = 3
 
+printRules()
 
 while(True):
     status = f"{currentRoom}\nYou are carrying: {inventory}\nYour current hp is: {hp}"
@@ -161,7 +198,11 @@ while(True):
     if(currentRoom == None):
         death()
         break
-    
+
+    if(currentRoom == closet):
+        victory()
+        break
+
     print("="*40)
     print(status)
 
@@ -186,7 +227,7 @@ while(True):
                 if(noun == currentRoom.exits[i]):
                     #change location
                     currentRoom = currentRoom.exitLocations[i]
-                    response = "Room Changed"
+                    response = "\nRoom Changed"
                     break
         
         #if verb is look
@@ -215,6 +256,8 @@ while(True):
                         whiteR.addGrabbable("key")
                     if(noun == "blood_bucket"):
                         redR.addGrabbable("key")
+                    if(noun == "trapdoor"):
+                        currentRoom = None
                     break
         
         #if verb is take
@@ -228,7 +271,7 @@ while(True):
                     inventory.append(grabbable)
                     #remove from room
                     currentRoom.delGrabbable(grabbable)
-                    response = "Item grabbed"
+                    response = "\nItem grabbed"
                     break
     if(response == "I don't see that item"):
         hp -= 1
